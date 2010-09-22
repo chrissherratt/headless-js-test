@@ -35,7 +35,7 @@
     </target>
 
     <target name="test-js" depends="compile" description="Executes js tests through test pages.">
-        <taskdef name="run-test-pages" classname="com.larrymyers.headlessjstest.RunTestPage">
+        <taskdef name="run-test-pages" classname="com.larrymyers.headlessjstest.RunTestPageTask">
             <classpath>
                 <path refid="classpath.path"/>
                 <pathelement location="build/classes"/>
