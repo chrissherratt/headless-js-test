@@ -8,6 +8,7 @@
     
     <script type="text/javascript" src="js/jasmine.js"></script>
     <script type="text/javascript" src="js/jasmine-html.js"></script>
+    <script type="text/javascript" src="js/jasmine.junit_reporter.js"></script>
 </head>
 <body>
     <script type="text/javascript">
@@ -17,7 +18,9 @@
             });
         });
         
+        var reporter = new jasmine.JUnitXmlReporter();
         jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+        jasmine.getEnv().addReporter(reporter);
         jasmine.getEnv().execute();
     </script>
 </body>
