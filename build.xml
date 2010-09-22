@@ -2,6 +2,7 @@
     <property name="src" location="src"/>
     <property name="build" location="build"/>
     <property name="dist"  location="dist"/>
+    <property name="reports" location="${build}/reports"/>
 
     <path id="classpath.path">
         <fileset dir="lib">
@@ -11,6 +12,7 @@
 
     <target name="init">
         <mkdir dir="${build}/classes"/>
+    	<mkdir dir="${build}/reports"/>
     </target>
 
     <target name="compile" depends="init" description="compile the source">
@@ -40,7 +42,7 @@
             </classpath>
         </taskdef>
 
-        <run-test-pages>
+        <run-test-pages reportDir="${reports}">
             <fileset dir="spec">
                 <include name="**/*.html"/>
             </fileset>
