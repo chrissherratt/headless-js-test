@@ -33,12 +33,10 @@
     JUnitXmlReporter.prototype = {
         reportRunnerResults: function(runner) {
             this.finished = true;
-            this.log("Runner Finished.");
         },
         
         reportRunnerStarting: function(runner) {
             this.started = true;
-            this.log("Runner Started.");
         },
         
         reportSpecResults: function(spec) {
@@ -49,8 +47,6 @@
             }
             
             spec.endTime = new Date();
-            
-            this.log(resultText);
         },
         
         reportSpecStarting: function(spec) {
@@ -59,8 +55,6 @@
             if (! spec.suite.startTime) {
                 spec.suite.startTime = new Date();
             }
-            
-            this.log(spec.suite.description + ' : ' + spec.description + ' ... ');
         },
         
         reportSuiteResults: function(suite) {
@@ -112,8 +106,6 @@
                 "filename": 'TEST-' + suite.description.replace(/\s/g, '') + '.xml',
                 "text": output.join('')
             });
-            
-            this.log(suite.description + ": " + results.passedCount + " of " + results.totalCount + " passed.");
         },
         
         log: function(str) {
