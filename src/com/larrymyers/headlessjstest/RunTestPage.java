@@ -17,6 +17,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.IncorrectnessListener;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
@@ -61,12 +62,13 @@ public class RunTestPage extends Task {
         for (URL testpage: testpages) {
             log(testpage.toString(), Project.MSG_INFO);
             
-            WebClient client = new WebClient();
+            WebClient client = new WebClient(BrowserVersion.FIREFOX_3);
             HtmlPage page = null;
             
             client.setCssEnabled(true);
             client.setJavaScriptEnabled(true);
             client.setAjaxController(new NicelyResynchronizingAjaxController());
+            client.setThrowExceptionOnScriptError(false);
             client.setIncorrectnessListener(new IncorrectnessListener() {
                 @Override
                 public void notify(String arg0, Object arg1) {
@@ -84,6 +86,24 @@ public class RunTestPage extends Task {
             if (page == null) {
                 log("Requested page was null.", Project.MSG_ERR);
                 continue;
+            }
+            
+            long totalWait = 0;
+            
+            while (! (Boolean) page.executeJavaScript("reporter.finished").getJavaScriptResult()) {
+                if (totalWait >= 10000) {
+                    break;
+                }
+                
+                log("Waiting for testpage reporter to finish ...", Project.MSG_INFO);
+                
+                synchronized(page) {
+                    try {
+                        page.wait(500);
+                    } catch (InterruptedException e) {
+                        log("Page load interrupted.", Project.MSG_ERR);
+                    }
+                }
             }
             
             ScriptResult result = page.executeJavaScript("reporter.reports");
