@@ -42,7 +42,7 @@
             </classpath>
         </taskdef>
 
-        <run-test-pages reportDir="${reports}">
+        <run-test-pages reportDir="${reports}" browserVersion="firefox3">
             <fileset dir="spec">
                 <include name="**/*.html"/>
             </fileset>

@@ -53,6 +53,11 @@ public class TestRunner {
         this.reportsDir = "";
     }
     
+    /**
+     * Loads each URL in the provided list, and records the results
+     * after the javascript finishes executing.
+     * @param testpages
+     */
     public void runTestPages(List<URL> testpages) {
         if (this.client == null) {
             this.client = createDefaultClient();
@@ -130,6 +135,12 @@ public class TestRunner {
         return client;
     }
     
+    /**
+     * Takes the given WebClient and configures it with sane options to load
+     * html test pages that contain css, javascript, and use ajax calls.
+     * @param client
+     * @return
+     */
     public WebClient configureClientWithDefaultOptions(WebClient client) {
         client.setCssEnabled(true);
         client.setJavaScriptEnabled(true);
@@ -144,18 +155,37 @@ public class TestRunner {
         return client;
     }
     
+    /**
+     * Set the HtmlUnit WebClient instance to use for
+     * loading and executing the test pages.
+     * @param client
+     */
     public void setClient(WebClient client) {
         this.client = client;
     }
 
+    /**
+     * Get the WebClient instance used by this runner.
+     * Can be null if it has not been explicitly set, or
+     * runTestPages has not been called yet.
+     * @return
+     */
     public WebClient getClient() {
         return client;
     }
 
+    /**
+     * Sets the directory path to write the test reports to.
+     * @param reportsDir
+     */
     public void setReportsDir(String reportsDir) {
         this.reportsDir = reportsDir;
     }
 
+    /**
+     * Gets the directory path to write the test reports to.
+     * @return
+     */
     public String getReportsDir() {
         return reportsDir;
     }
