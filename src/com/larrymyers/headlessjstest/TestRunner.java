@@ -30,6 +30,11 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
  * var reporter = [
  *   {
  *     name: "Test Suite Name",
+ *     result: {
+ *         passed: 3,
+ *         failed: 0,
+ *         total:  3
+ *     },
  *     filename: "TEST-TestSuiteName.xml",
  *     text: "<testcases></testcases>"
  *   }
@@ -107,7 +112,8 @@ public class TestRunner {
             
             for (long i = 0; i < reports.getLength(); i++) {
                 NativeObject report = (NativeObject) reports.get(i);
-                log.info(report.get("name").toString());
+                
+                logResults(report);
                 
                 String filename = report.get("filename").toString();
                 String reportXml = report.get("text").toString();
@@ -125,6 +131,15 @@ public class TestRunner {
             
             this.client.closeAllWindows();
         }
+    }
+    
+    private void logResults(NativeObject report) {
+        String name = report.get("name").toString();
+        NativeObject results = (NativeObject) report.get("results");
+        Double passed = (Double) results.get("passed");
+        Double total = (Double) results.get("total");
+        
+        log.info(name + " : " + passed.intValue() + " of " + total.intValue() + " passed.");
     }
     
     private WebClient createDefaultClient() {

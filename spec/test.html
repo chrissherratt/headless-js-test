@@ -16,6 +16,10 @@
             it("Should pass.", function() {
                 expect(0).toEqual(0);
             });
+            
+            it("Should fail.", function() {
+                expect(true).toEqual(false);
+            });
         });
         
         var reporter = new jasmine.JUnitXmlReporter();

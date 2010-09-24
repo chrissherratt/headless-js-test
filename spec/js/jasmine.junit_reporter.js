@@ -103,6 +103,11 @@
             
             this.reports.push({
                 "name": suite.description,
+                "results": {
+                    "passed": results.passedCount,
+                    "failed": results.failedCount,
+                    "total": results.totalCount
+                },
                 "filename": 'TEST-' + suite.description.replace(/\s/g, '') + '.xml',
                 "text": output.join('')
             });
