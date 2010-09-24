@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>TestPage</title>
+    
+    <link rel="stylesheet" href="css/jasmine.css" type="text/css" />
+    
+    <script type="text/javascript" src="js/jasmine.js"></script>
+    <script type="text/javascript" src="js/jasmine-html.js"></script>
+    <script type="text/javascript" src="js/jasmine.junit_reporter.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+</head>
+<body>
+    <a href="javascript:void(0)" id="link1">Click Me</a>
+    
+    <script type="text/javascript">
+        describe("Basic DOM Events", function() {
+            it("A click event handler should be triggered when the element it's attached to is clicked.", function() {
+                var clicked = false;
+                
+                $('#link1').bind('click', function(evt) {
+                    clicked = true;
+                });
+                
+                $('#link1').trigger('click');
+                
+                expect(clicked).toEqual(true);
+            });
+        });
+        
+        var reporter = new jasmine.JUnitXmlReporter();
+        jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+        jasmine.getEnv().addReporter(reporter);
+        jasmine.getEnv().execute();
+    </script>
+</body>
+</html>
