@@ -24,21 +24,24 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
  * Loads html testpages and waits for all javascript to execute.
  * Writes test results to the specified directory, in JUnit XML Report format.
  * 
- * Expects the report results to be available in a global javascript variable
- * called "reporter" with the follow data structure:
+ * Expects a global javascript variable called 'reporter' to be available, and contain
+ * the following data structure for the TestRunner to generate and report results correctly.
  * 
- * var reporter = [
- *   {
- *     name: "Test Suite Name",
- *     result: {
+ * var reporter = {
+ *   finished: true,
+ *   reports: [
+ *     {
+ *       name: "Test Suite Name",
+ *       result: {
  *         passed: 3,
  *         failed: 0,
  *         total:  3
- *     },
- *     filename: "TEST-TestSuiteName.xml",
- *     text: "<testcases></testcases>"
- *   }
- * ];
+ *       },
+ *       filename: "TEST-TestSuiteName.xml",
+ *       text: "<testcases></testcases>"
+ *     }
+ *   ]
+ * };
  * 
  * For more information on JUnit XML Report Format:
  * 
@@ -86,50 +89,49 @@ public class TestRunner {
                 continue;
             }
             
-            long totalWait = 0;
-            
-            while (! (Boolean) page.executeJavaScript("reporter.finished").getJavaScriptResult()) {
-                if (totalWait >= 10000) {
-                    break;
-                }
+            try {
+                long totalWait = 0;
                 
-                log.info("Waiting for testpage reporter to finish ...");
-                
-                synchronized(page) {
-                    try {
-                        page.wait(500);
-                    } catch (InterruptedException e) {
-                        log.error("Page load interrupted.");
+                while (! (Boolean) page.executeJavaScript("reporter.finished").getJavaScriptResult()) {
+                    if (totalWait >= 10000) {
+                        break;
+                    }
+                    
+                    log.info("Waiting for testpage reporter to finish ...");
+                    
+                    synchronized(page) {
+                        try {
+                            page.wait(500);
+                        } catch (InterruptedException e) {
+                            log.error("Page load interrupted.");
+                        }
                     }
                 }
-            }
-            
-            ScriptResult result = page.executeJavaScript("reporter.reports");
-            NativeArray reports = (NativeArray) result.getJavaScriptResult();
-            
-            String reportsFound = Long.valueOf(reports.getLength()).toString();
-            log.info(reportsFound + " reports generated");
-            
-            for (long i = 0; i < reports.getLength(); i++) {
-                NativeObject report = (NativeObject) reports.get(i);
                 
-                logResults(report);
+                ScriptResult result = page.executeJavaScript("reporter.reports");
+                NativeArray reports = (NativeArray) result.getJavaScriptResult();
                 
-                String filename = report.get("filename").toString();
-                String reportXml = report.get("text").toString();
+                String reportsFound = Long.valueOf(reports.getLength()).toString();
+                log.info(reportsFound + " reports generated");
                 
-                File reportFile = new File(this.reportsDir + "/" + filename);
-                
-                try {
+                for (long i = 0; i < reports.getLength(); i++) {
+                    NativeObject report = (NativeObject) reports.get(i);
+                    
+                    logResults(report);
+                    
+                    String filename = report.get("filename").toString();
+                    String reportXml = report.get("text").toString();
+                    
+                    File reportFile = new File(this.reportsDir + "/" + filename);
                     FileWriter out = new FileWriter(reportFile);
                     out.write(reportXml);
                     out.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
                 }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            } finally {
+                this.client.closeAllWindows();
             }
-            
-            this.client.closeAllWindows();
         }
     }
     
