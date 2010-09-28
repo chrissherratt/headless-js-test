@@ -1,5 +1,6 @@
 <project name="headless-js-test">
     <property name="src" location="src"/>
+    <property name="doc" location="doc"/>
     <property name="build" location="build"/>
     <property name="dist"  location="dist"/>
     <property name="reports" location="${build}/reports"/>
@@ -12,7 +13,8 @@
 
     <target name="init">
         <mkdir dir="${build}/classes"/>
-    	<mkdir dir="${build}/reports"/>
+        <mkdir dir="${build}/reports"/>
+        <mkdir dir="${doc}"/>
     </target>
 
     <target name="compile" depends="init" description="compile the source">
@@ -21,6 +23,10 @@
                 <path refid="classpath.path"/>
             </classpath>
         </javac>
+    </target>
+    
+    <target name="javadoc" depends="compile" description="generate the javadoc">
+        <javadoc sourcepath="${src}" destdir="${doc}"/>
     </target>
 
     <target name="dist" depends="compile" description="generate the distribution" >
