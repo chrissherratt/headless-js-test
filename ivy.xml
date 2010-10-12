@@ -1,0 +1,7 @@
+<ivy-module version="2.0">
+    <info organisation="com.larrymyers" module="headless-js-test"/>
+    <dependencies>
+        <dependency org="net.sourceforge.htmlunit" name="htmlunit" rev="2.8"/>
+        <dependency org="org.apache.ant" name="ant" rev="1.8.1"/>
+    </dependencies>
+</ivy-module>
