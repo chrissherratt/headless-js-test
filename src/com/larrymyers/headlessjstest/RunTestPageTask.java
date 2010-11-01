@@ -26,6 +26,7 @@ public class RunTestPageTask extends Task {
     private List<FileSet> filesets;
     private String reportsDir;
     private BrowserVersion browserVersion;
+    private boolean failOnError;
     
     @Override
     public void init() throws BuildException {
@@ -34,6 +35,7 @@ public class RunTestPageTask extends Task {
         this.filesets = new ArrayList<FileSet>();
         this.reportsDir = "";
         this.browserVersion = BrowserVersion.FIREFOX_3;
+        this.failOnError = false;
     }
 
     public void addFileset(FileSet fileset) {
@@ -42,6 +44,10 @@ public class RunTestPageTask extends Task {
     
     public void setReportDir(String path) {
         this.reportsDir = path;
+    }
+    
+    public void setFailonerror(boolean flag) {
+        this.failOnError = flag;
     }
     
     public void setBrowserVersion(String version) {
@@ -89,7 +95,7 @@ public class RunTestPageTask extends Task {
         runner.setReportsDir(this.reportsDir);
         boolean allPassed = runner.runTestPages(testpages);
         
-        if (! allPassed) {
+        if (! allPassed && failOnError) {
             throw new BuildException("Not all test pages passed.");
         }
     }

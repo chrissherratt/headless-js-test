@@ -26,6 +26,7 @@ The RunTestPagesTask takes two optional arguments.
 
 * reportsDir : defaults to an empty string, defines the directory to write the test reports to.
 * browserVersion: defaults to firefox3. ie6, ie7, and ie8 are also supported.
+* failonerror: set to true to fail the build if there is an error or a test fails.
 
 Right now the way to define was test pages are run is to select them with a fileset.
  
