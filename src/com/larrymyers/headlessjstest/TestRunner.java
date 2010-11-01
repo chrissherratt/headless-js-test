@@ -65,11 +65,14 @@ public class TestRunner {
      * Loads each URL in the provided list, and records the results
      * after the javascript finishes executing.
      * @param testpages
+     * @return True if all test pages executed and passed successfully.
      */
-    public void runTestPages(List<URL> testpages) {
+    public boolean runTestPages(List<URL> testpages) {
         if (this.client == null) {
             this.client = createDefaultClient();
         }
+        
+        boolean allPassed = true;
         
         for (URL testpage: testpages) {
             log.debug(testpage.toString());
@@ -80,12 +83,15 @@ public class TestRunner {
                 page = this.client.getPage(testpage);
             } catch (FailingHttpStatusCodeException e) {
                 log.error(e.getMessage());
+                allPassed = false;
             } catch (IOException e) {
                 log.error(e.getMessage());
+                allPassed = false;
             }
             
             if (page == null) {
                 log.error("Requested page was null: " + testpage.toString());
+                allPassed = false;
                 continue;
             }
             
@@ -117,7 +123,11 @@ public class TestRunner {
                 for (long i = 0; i < reports.getLength(); i++) {
                     NativeObject report = (NativeObject) reports.get(i);
                     
-                    logResults(report);
+                    boolean passed = logResults(report);
+                    
+                    if (!passed) {
+                        allPassed = false;
+                    }
                     
                     String filename = report.get("filename").toString();
                     String reportXml = report.get("text").toString();
@@ -128,20 +138,29 @@ public class TestRunner {
                     out.close();
                 }
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error("Error generating report for: " + testpage.toString());
+                allPassed = false;
             } finally {
                 this.client.closeAllWindows();
             }
         }
+        
+        return allPassed;
     }
     
-    private void logResults(NativeObject report) {
+    private boolean logResults(NativeObject report) {
         String name = report.get("name").toString();
         NativeObject results = (NativeObject) report.get("results");
-        Double passed = (Double) results.get("passed");
-        Double total = (Double) results.get("total");
+        int passed = ((Double) results.get("passed")).intValue();
+        int total = ((Double) results.get("total")).intValue();
         
-        log.info(name + " : " + passed.intValue() + " of " + total.intValue() + " passed.");
+        log.info(name + " : " + passed + " of " + total + " passed.");
+        
+        if (passed != total) {
+            return false;
+        }
+        
+        return true;
     }
     
     private WebClient createDefaultClient() {

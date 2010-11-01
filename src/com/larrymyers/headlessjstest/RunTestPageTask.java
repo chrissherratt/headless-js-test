@@ -87,6 +87,10 @@ public class RunTestPageTask extends Task {
         
         runner.setClient(runner.configureClientWithDefaultOptions(client));
         runner.setReportsDir(this.reportsDir);
-        runner.runTestPages(testpages);
+        boolean allPassed = runner.runTestPages(testpages);
+        
+        if (! allPassed) {
+            throw new BuildException("Not all test pages passed.");
+        }
     }
 }
