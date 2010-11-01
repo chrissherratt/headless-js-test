@@ -24,9 +24,7 @@ sure to preserve each build to get a graph of test history.
 
 The RunTestPagesTask takes two optional arguments.
 
-reportsDir : defaults to an empty string, if defined the the reports will be written to
-             the directory where the task is run.
-
+reportsDir : defaults to an empty string, defines the directory to write the test reports to.
 browserVersion: defaults to firefox3. ie6, ie7, and ie8 are also supported.
 
 Right now the way to define was test pages are run is to select them with a fileset.
