@@ -18,7 +18,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
  * Custom Ant Task to execute javascript unit tests from within
  * html test pages.
  * 
- * @author lbmyers
+ * @author larrymyers
  *
  */
 public class RunTestPageTask extends Task {

@@ -47,7 +47,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
  * 
  * http://stackoverflow.com/questions/428553/unable-to-get-hudson-to-parse-junit-test-output-xml
  * 
- * @author lbmyers
+ * @author larrymyers
  *
  */
 public class TestRunner {
@@ -72,7 +72,7 @@ public class TestRunner {
         }
         
         for (URL testpage: testpages) {
-            log.info(testpage.toString());
+            log.debug(testpage.toString());
             
             HtmlPage page = null;
             
@@ -85,7 +85,7 @@ public class TestRunner {
             }
             
             if (page == null) {
-                log.error("Requested page was null.");
+                log.error("Requested page was null: " + testpage.toString());
                 continue;
             }
             
@@ -97,7 +97,7 @@ public class TestRunner {
                         break;
                     }
                     
-                    log.info("Waiting for testpage reporter to finish ...");
+                    log.debug("Waiting for testpage reporter to finish ...");
                     
                     synchronized(page) {
                         try {
@@ -112,7 +112,7 @@ public class TestRunner {
                 NativeArray reports = (NativeArray) result.getJavaScriptResult();
                 
                 String reportsFound = Long.valueOf(reports.getLength()).toString();
-                log.info(reportsFound + " reports generated");
+                log.debug(reportsFound + " reports generated");
                 
                 for (long i = 0; i < reports.getLength(); i++) {
                     NativeObject report = (NativeObject) reports.get(i);

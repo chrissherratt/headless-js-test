@@ -67,6 +67,7 @@
             <classpath>
                 <path refid="classpath.path"/>
                 <pathelement location="build/classes"/>
+                <pathelement location="conf"/>
             </classpath>
         </taskdef>
 
