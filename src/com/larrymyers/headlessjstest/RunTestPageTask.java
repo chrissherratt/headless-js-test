@@ -53,6 +53,10 @@ public class RunTestPageTask extends Task {
     public void setBrowserVersion(String version) {
         version = version.toLowerCase();
         
+        if (version.equals("firefox")) {
+            this.browserVersion = BrowserVersion.FIREFOX_3_6;
+        }
+        
         if (version.equals("firefox3")) {
             this.browserVersion = BrowserVersion.FIREFOX_3;
         }
