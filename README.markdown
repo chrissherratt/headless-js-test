@@ -24,6 +24,9 @@ Reference the build.xml in the project for how to use the run-test-pages task to
 from within Ant. Integration with a Hudson project is fairly trivial, and has been tested. Make
 sure to preserve each build to get a graph of test history.
 
+Note: Both Ant and HtmlUnit can be fairly noisy on the console, see the included conf/log4j.properties
+for getting the console output to be more readable during test runs.
+
 ## TestRunner
 
 Loads html testpages and waits for all javascript to execute.
