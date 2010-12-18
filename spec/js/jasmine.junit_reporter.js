@@ -40,12 +40,6 @@
         },
         
         reportSpecResults: function(spec) {
-            var resultText = "Failed.";
-            
-            if (spec.results().passed()) {
-                resultText = "Passed.";
-            }
-            
             spec.endTime = new Date();
         },
         
