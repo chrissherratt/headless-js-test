@@ -45,8 +45,6 @@ public class SeleniumRunner {
                         break;
                     }
                     
-                    log.info("Waiting for testpage reporter to finish ...");
-                    
                     Thread.sleep(500);
                     totalWait += 500;
                 }
@@ -54,10 +52,13 @@ public class SeleniumRunner {
                 Long reportCount = (Long) driver.executeScript("return window.reporter.reports.length");
                 
                 for (long i = 0; i < reportCount; i++) {
+                    String name = driver.executeScript("return window.reporter.reports["+i+"].name").toString();
+                    Long failed = (Long) driver.executeScript("return window.reporter.reports["+i+"].results.failed");
+                    Long passed = (Long) driver.executeScript("return window.reporter.reports["+i+"].results.passed");
+                    Long total = (Long) driver.executeScript("return window.reporter.reports["+i+"].results.total");
                     
-                    Long failedCount = (Long) driver.executeScript("return window.reporter.reports["+i+"].results.failed");
-                    
-                    if (failedCount > 0) {
+                    if (failed > 0) {
+                        log.info(name + ": " + failed + " tests of " + total + " failed!");
                         allPassed = false;
                     }
                     
