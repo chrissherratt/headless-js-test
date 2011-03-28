@@ -4,5 +4,6 @@
         <dependency org="net.sourceforge.htmlunit" name="htmlunit" rev="2.8"/>
         <dependency org="org.apache.ant" name="ant" rev="1.8.1"/>
         <dependency org="log4j" name="log4j" rev="1.2.16"/>
+        <dependency org="org.seleniumhq.selenium" name="selenium" rev="2.0b3"/>
     </dependencies>
 </ivy-module>

@@ -23,6 +23,9 @@
 	<classpathentry kind="lib" path="lib/httpclient-4.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/httpcore-4.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/httpmime-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/selenium-remote-driver-2.0b3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/selenium-api-2.0b3.jar"/>
+	<classpathentry kind="lib" path="lib/selenium-firefox-driver-2.0b3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
